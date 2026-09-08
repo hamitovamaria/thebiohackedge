@@ -39,7 +39,12 @@ h1::after { content:''; display:block; width:130px; height:3px;
   background:#C9A227; margin-top:16px; transform:rotate(-0.8deg); }
 
 .subtitle { font-family:'Caveat', cursive; font-size:26px; color:#8C7F6A;
-  margin-bottom:40px; font-style:italic; }
+  margin-bottom:14px; font-style:italic; }
+
+.meta { font-family:'Poppins', sans-serif; font-size:11.5px; letter-spacing:1.6px;
+  text-transform:uppercase; color:#B07A1E; font-weight:600;
+  border-top:1.5px solid #E3D9C2; border-bottom:1.5px solid #E3D9C2;
+  padding:12px 0; margin-bottom:40px; }
 
 h2 { font-family:'Caveat', cursive; font-size:34px; color:#B07A1E;
   margin:52px 0 18px 0; font-weight:700; }
@@ -125,6 +130,7 @@ tr:nth-child(even) td { background:#F4EFE3; }
   .ring { width:22px; height:22px; border-width:2.5px; }
   h1 { font-size:34px; }
   .subtitle { font-size:21px; }
+  .meta { font-size:10px; letter-spacing:1.2px; padding:10px 0; margin-bottom:30px; }
   h2 { font-size:27px; }
   p, li { font-size:16px; }
   .quote { font-size:22px; }
@@ -145,6 +151,7 @@ tr:nth-child(even) td { background:#F4EFE3; }
 
   <h1>Same Lunch, Different Body: The Variables Nobody Ever Put On Your Plate</h1>
   <p class="subtitle">Two people. Identical meal. Completely different afternoon. Here's what actually separates them.</p>
+  <p class="meta">8 min read &nbsp;·&nbsp; Two of the eight switches — free, in full, with the mechanism behind them</p>
 
   <p>For years I asked the same question everybody else was asking.</p>
 
@@ -442,5 +449,38 @@ tr:nth-child(even) td { background:#F4EFE3; }
   <p class="fine">This article is educational and shares general information about nutrition and lifestyle. It is not medical advice and does not replace consultation with a doctor. Individual results vary — discuss your own situation, medications and lab work with your healthcare provider.</p>
 
 </div>
+
+<!-- Umami analytics -->
+<script defer src="https://cloud.umami.is/script.js" data-website-id="65041eb6-d0fc-4741-939d-47b062be35d7"></script>
+
+<script>
+// Tracks: how far people scroll, and clicks on the two product links.
+// Works with Umami, Plausible, and Google Analytics — whichever is installed.
+(function () {
+  function track(name, data) {
+    if (window.umami) { window.umami.track(name, data || {}); }
+    else if (window.plausible) { window.plausible(name, { props: data || {} }); }
+    else if (window.gtag) { window.gtag('event', name, data || {}); }
+  }
+
+  // scroll depth: fire once per threshold
+  var hit = {};
+  window.addEventListener('scroll', function () {
+    var h = document.body.scrollHeight - window.innerHeight;
+    if (h <= 0) return;
+    var pct = Math.round((window.scrollY / h) * 100);
+    [25, 50, 75, 100].forEach(function (mark) {
+      if (pct >= mark && !hit[mark]) { hit[mark] = true; track('scroll-' + mark); }
+    });
+  }, { passive: true });
+
+  // product link clicks
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('a[href*="lava.top"]');
+    if (!a) return;
+    track('cta-click', { position: a.classList.contains('btn') ? 'bottom-button' : 'mid-article' });
+  });
+})();
+</script>
 </body>
 </html>
